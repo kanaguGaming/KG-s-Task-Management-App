@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="center-layout">
+    <div class="auth-container card">
+        <h1 class="text-center">Create Account</h1>
+        <p class="text-center text-muted">Join Task Manager today</p>
+        
+        <form id="registerForm" class="auth-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Min. 6 characters" minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required placeholder="Repeat password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Register</button>
+        </form>
+        
+        <p class="text-center mt-20">
+            Already have an account? <a href="index.html">Login</a>
+        </p>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        if (getCurrentUser()) {
+            window.location.href = 'dashboard.html';
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+
+            if (registerUser(name, email, password)) {
+                showToast('Registration successful! Redirecting to login...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
